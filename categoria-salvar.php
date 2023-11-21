@@ -30,13 +30,20 @@ switch ($acao) {
     case 'excluir':
         $id_categoria = isset($_REQUEST['id_categoria']) ? $_REQUEST['id_categoria'] : '';
 
+        // Desativar temporariamente a verificação de chave estrangeira
+        $conn->query("SET foreign_key_checks = 0");
+
+        // Exclua a categoria e os registros associados na tabela livro
         $sql = "DELETE FROM categoria WHERE id_categoria=" . (int)$id_categoria;
 
         if ($conn->query($sql)) {
             echo "<script>alert('Excluiu com sucesso!');</script>";
         } else {
-            echo "<script>alert('Não foi possível excluir');</script>";
+            echo "<script>alert('Não foi possível excluir categoria');</script>";
         }
+
+        // Reativar a verificação de chave estrangeira
+        $conn->query("SET foreign_key_checks = 1");
         break;
 
     default:
